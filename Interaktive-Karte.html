@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Interaktive Karte</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet"/>
+  <link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'OCR A Std', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; 
+    }
+    #map {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh; 
+      z-index: 10; 
+    }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100; 
+      background: rgba(6, 26, 64, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+  <header id="header" class="p-4 flex justify-between items-center animate-fade-in">
+    <div class="header-title text-xl md:text-2xl font-bold">Sudata - Interaktive Karte</div>
+    <nav class="space-x-2 md:space-x-4 text-sm md:text-base">
+      <a class="text-gray-300 hover:text-white transition duration-300 ease-in-out transform hover:scale-110 hover:translate-z-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" href="index.html">Startseite</a>
+      <a class="text-gray-300 hover:text-white transition duration-300 ease-in-out transform hover:scale-110 hover:translate-z-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" href="#">Geschichte</a>
+      <a class="text-gray-300 hover:text-white transition duration-300 ease-in-out transform hover:scale-110 hover:translate-z-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" href="#">Dokumente</a>
+      <a class="text-gray-300 hover:text-white transition duration-300 ease-in-out transform hover:scale-110 hover:translate-z-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" href="#">Kontakt</a>
+    </nav>
+  </header>
+
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([50.0, 13.0], 7); 
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    var markers = [
+      {name: "Liberec (Reichenberg)", coords: [50.771, 15.056], description: "Reichenberg (Liberec) war eine der größten Städte im nordwestlichen Sudetenland. Nach dem Ende des Zweiten Weltkriegs und der Vertreibung der Deutschen wurde die Region von tschechischen Siedlern übernommen.", link: "https://de.wikipedia.org/wiki/Liberec", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Třebíč (Trebitsch)", coords: [49.213, 15.887], description: "Trebitsch war ein historisches Zentrum in Mähren, wo viele Deutsche während und nach dem Zweiten Weltkrieg vertrieben wurden.", link: "https://de.wikipedia.org/wiki/Třebíč", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Cheb (Eger)", coords: [50.066, 12.375], description: "Cheb war eine wichtige Stadt im Westen des Sudetenlandes. Nach dem Zweiten Weltkrieg wurden viele Deutsche vertrieben.", link: "https://de.wikipedia.org/wiki/Cheb", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Jičín (Jičin)", coords: [50.436, 15.358], description: "Jičín, eine Stadt in Böhmen, wurde nach 1945 fast vollständig von Deutschen befreit und die Bevölkerung vertrieben.", link: "https://de.wikipedia.org/wiki/Jičín", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Frýdek-Místek (Friedek-Mistek)", coords: [49.677, 18.345], description: "Frýdek-Místek liegt im Osten des ehemaligen Sudetenlandes. Es war ein Zentrum für die deutsche Bevölkerung, die nach dem Krieg vertrieben wurde.", link: "https://de.wikipedia.org/wiki/Frýdek-Místek", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Zlín (Zlin)", coords: [49.225, 17.671], description: "Zlín war ein bekannter Industriestandort, der nach dem Zweiten Weltkrieg von Tschechen übernommen wurde, nachdem die deutsche Bevölkerung vertrieben wurde.", link: "https://de.wikipedia.org/wiki/Zlín", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Kladno", coords: [50.141, 14.102], description: "Kladno, in der Nähe von Prag gelegen, war ein weiterer wichtiger Industriestandort im Sudetenland, wo Deutsche nach dem Krieg vertrieben wurden.", link: "https://de.wikipedia.org/wiki/Kladno", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Chomutov (Komotau)", coords: [50.460, 13.418], description: "Komotau war ein Zentrum der deutschen Bevölkerung im westlichen Sudetenland, das nach dem Zweiten Weltkrieg von Tschechen besiedelt wurde.", link: "https://de.wikipedia.org/wiki/Chomutov", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Sokolov (Schlagenthin)", coords: [50.192, 12.650], description: "Sokolov war ein Ort im westlichen Sudetenland, der ebenfalls von Deutschen bewohnt war, bevor sie nach dem Zweiten Weltkrieg vertrieben wurden.", link: "https://de.wikipedia.org/wiki/Sokolov", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Ústí nad Labem (Aussig)", coords: [50.660, 14.040], description: "Ústí nad Labem, auch bekannt als Aussig, war eine bedeutende Stadt im Sudetenland. Nach dem Zweiten Weltkrieg wurden viele Deutsche aus dieser Region vertrieben.", link: "https://de.wikipedia.org/wiki/Ústí_nad_Labem", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Karlovy Vary (Karlsbad)", coords: [50.232, 12.871], description: "Karlovy Vary, auch bekannt als Karlsbad, war ein berühmter Kurort im Sudetenland. Nach dem Zweiten Weltkrieg wurden viele Deutsche aus dieser Region vertrieben.", link: "https://de.wikipedia.org/wiki/Karlovy_Vary", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Plzeň (Pilsen)", coords: [49.746, 13.377], description: "Plzeň, auch bekannt als Pilsen, war eine bedeutende Industriestadt im Sudetenland. Nach dem Zweiten Weltkrieg wurden viele Deutsche aus dieser Region vertrieben.", link: "https://de.wikipedia.org/wiki/Plzeň", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Hradec Králové (Königgrätz)", coords: [50.209, 15.832], description: "Hradec Králové, auch bekannt als Königgrätz, war eine bedeutende Stadt im Sudetenland. Nach dem Zweiten Weltkrieg wurden viele Deutsche aus dieser Region vertrieben.", link: "https://de.wikipedia.org/wiki/Hradec_Králové", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Marienbad (Mariánské Lázně)", coords: [49.972, 12.701], description: "Marienbad war ein berühmter Kurort im Sudetenland und zog zahlreiche Besucher aus Europa an.", link: "https://de.wikipedia.org/wiki/Mari%C3%A1nsk%C3%A9_L%C3%A1zn%C4%9B", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Děčín (Tetschen)", coords: [50.779, 14.196], description: "Děčín war ein wichtiger Handelsort im Sudetenland und bekannt für sein Schloss, das die Stadt überblickt.", link: "https://de.wikipedia.org/wiki/D%C4%9B%C4%8D%C3%ADn", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Zittau", coords: [50.897, 14.807], description: "Zittau liegt heute in Deutschland nahe der tschechischen Grenze und war historisch eng mit der Region des Sudetenlandes verbunden.", link: "https://de.wikipedia.org/wiki/Zittau", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Breslau (Wrocław)", coords: [51.107, 17.038], description: "Breslau, heute in Polen, war ein kulturelles Zentrum der deutschen Bevölkerung und ist durch die Umsiedlung nach dem Zweiten Weltkrieg historisch mit dem Sudetenland verbunden.", link: "https://de.wikipedia.org/wiki/Breslau", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+      {name: "Görlitz", coords: [51.152, 14.988], description: "Görlitz liegt in Deutschland an der Neiße und war historisch ein wichtiger Knotenpunkt für die deutschsprachigen Gebiete im Osten, einschließlich des Sudetenlandes.", link: "https://de.wikipedia.org/wiki/G%C3%B6rlitz", historyLink: "https://de.wikipedia.org/wiki/Vertreibung_der_Deutschen_nach_dem_Zweiten_Weltkrieg", additionalLinks: []},
+    ];
+
+    markers.forEach(function(marker) {
+      var popupContent = '<strong>' + marker.name + '</strong><br>' + marker.description + '<br><a href="' + marker.link + '" target="_blank">Mehr erfahren</a><br><a href="' + marker.historyLink + '" target="_blank">Vertreibung der Deutschen</a>';
+      if (marker.additionalLinks) {
+        marker.additionalLinks.forEach(function(link) {
+          popupContent += '<br><a href="' + link + '" target="_blank">Weiterführende Informationen</a>';
+        });
+      }
+      L.marker(marker.coords)
+        .addTo(map)
+        .bindPopup(popupContent);
+    });
+  </script>
+</body>
+</html>

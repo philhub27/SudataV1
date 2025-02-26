@@ -1,0 +1,301 @@
+<html lang="de">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Zeitzeugenberichte
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet"/>
+  <style>
+   body {
+      font-family: 'Tajawal', serif;
+    }
+    .animate-pulse-slow {
+      animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    .animate-fade-in {
+      animation: fadeIn 2s ease-in-out;
+    }
+    .animate-slide-up {
+      animation: slideUp 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    #map { height: 400px; width: 100%; }
+    .hover-glow:hover {
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+      transition: box-shadow 0.3s ease-in-out;
+    }
+    
+.image-button-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 50px; 
+    justify-content: center; 
+}
+
+
+.image-button {
+    cursor: pointer;
+    overflow: visible;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+    position: relative; 
+    flex: 0 1 100px;
+    margin-bottom: 10px; 
+}
+
+.image-button:hover {
+    transform: scale(1.1);
+}
+
+.image-button img {
+    display: block;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.image-button:hover img {
+    opacity: 0.8;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 100%; 
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px); 
+    background-color: rgba(0, 0, 0, 0.8); 
+    color: white; 
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0; 
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.image-button:hover .tooltip {
+    opacity: 1; 
+    visibility: visible;
+    transform: translateX(-50%) translateY(0); 
+}
+
+  </style>
+ </head>
+ <body class="bg-gray-900 text-white">
+  <header class="bg-gray-800 p-4 flex justify-between items-center animate-fade-in hover-glow">
+   <div class="text-xl md:text-2xl font-bold">
+    Sudata - Zeitzeugen
+   </div>
+   <nav class="space-x-2 md:space-x-4 text-sm md:text-base">
+    <a class="hover:text-gray-400 transition duration-300 ease-in-out" href="index.html">
+     Startseite
+    </a>
+    <a class="hover:text-gray-400 transition duration-300 ease-in-out" href="#geschichte">
+     Geschichte
+    </a>
+    <a class="hover:text-gray-400 transition duration-300 ease-in-out" href="#dokumente">
+     Dokumente
+    </a>
+    <a class="hover:text-gray-400 transition duration-300 ease-in-out" href="#kontakt">
+     Kontakt
+    </a>
+   </nav>
+  </header>
+  <main class="p-6 md:p-12">
+    <section class="mb-12 animate-slide-up" id="geschichte">
+      <h2 class="text-2xl md:text-3xl font-bold mb-10">
+        Bekannte Zeitzeugen
+      </h2>
+      <div class="image-button-container">
+        <div class="flex justify-center items-center gap-4 mb-6 relative">
+          <div class="absolute left-1/2 -translate-x-1/2 -top-[17px] h-32 w-[120%] bg-gray-100 rounded-lg -z-10"style="background-color: #1F2937;"></div>
+          <div class="image-button">
+            <img alt="Bild 1" class="w-24 h-24 object-cover transition-transform duration-300 rounded-lg hover:scale-110 hover-glow" src="Emil Baierl.jpg" data-hover-src="Emil Baierl.jpg"/>
+            <div class="tooltip">Emil Baierl</div>
+          </div>
+          <div class="image-button">
+            <img alt="Bild 2" class="w-24 h-24 object-cover transition-transform duration-300 rounded-lg hover:scale-110 hover-glow" src="Robert Böhm.jpg" data-hover-src="Robert Böhm.jpg"/>
+            <div class="tooltip">Robert Böhm</div>
+          </div>
+          <div class="image-button">
+            <img alt="Bild 3" class="w-24 h-24 object-cover transition-transform duration-300 rounded-lg hover:scale-110 hover-glow" src="Karolina Cermakova.jpg" data-hover-src="Karolina Cermakova.jpg"/>
+            <div class="tooltip">Karolina Cermakova</div>
+          </div>
+          <div class="image-button">
+            <img alt="Bild 4" class="w-24 h-24 object-cover transition-transform duration-300 rounded-lg hover:scale-110 hover-glow" src="Johann Eppinger.jpg" data-hover-src="Johann Eppinger.jpg"/>
+            <div class="tooltip">Johann Eppinger</div>
+          </div>
+          <div class="image-button">
+            <img alt="Bild 5" class="w-24 h-24 object-cover transition-transform duration-300 rounded-lg hover:scale-110 hover-glow" src="Anna Fischer.jpg" data-hover-src="Anna Fischer.jpg"/>
+            <div class="tooltip">Anna Fischer</div>
+          </div>
+          <div class="image-button">
+            <img alt="Bild 1" class="w-24 h-24 object-cover transition-transform duration-300 rounded-lg hover:scale-110 hover-glow" src="Franziska Krampfl.jpg" data-hover-src="Franziska Krampfl.jpg"/>
+            <div class="tooltip">Franziska Krampfl</div>
+          </div>
+          <div class="image-button">
+            <img alt="Bild 1" class="w-24 h-24 object-cover transition-transform duration-300 rounded-lg hover:scale-110 hover-glow" src="Heidrun Kucherl.jpg" data-hover-src="Heidrun Kucherl.jpg"/>
+            <div class="tooltip">Heidrun Kucherl</div>
+          </div>
+          <div class="image-button">
+            <img alt="Bild 1" class="w-24 h-24 object-cover transition-transform duration-300 rounded-lg hover:scale-110 hover-glow" src="Johann-Löffelman.jpg" data-hover-src="Johann-Löffelman.jpg"/>
+            <div class="tooltip">Johann-Löffelman</div>
+          </div>
+          <div class="image-button">
+            <img alt="Bild 1" class="w-24 h-24 object-cover transition-transform duration-300 rounded-lg hover:scale-110 hover-glow" src="Maria-Mayer.jpg" data-hover-src="Maria-Mayer.jpg"/>
+            <div class="tooltip">Maria Mayer</div>
+          </div>
+          <div class="image-button">
+            <img alt="Bild 1" class="w-24 h-24 object-cover transition-transform duration-300 rounded-lg hover:scale-110 hover-glow" src="Ernst-Nodes.jpg" data-hover-src="Ernst-Nodes.jpg"/>
+            <div class="tooltip">Ernst Nodes</div>
+          </div>
+        </div>
+      </div>
+      
+      <p class="text-sm md:text-base leading-relaxed">
+      </p>
+    </section>
+   <section class="mb-12 animate-slide-up" id="dokumente">
+    <h2 class="text-2xl md:text-3xl font-bold mb-4">
+     Die Interviews
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div class="bg-gray-800 p-4 rounded-lg hover-glow">
+        <div class="overflow-hidden rounded-lg">
+          <a href="https://www.memoryofnations.eu/en/baierl-emil-1933" target="_blank">
+            <img
+              alt="Bild des Münchner Abkommens"
+              class="w-full mb-4 transform transition-transform duration-300 hover:scale-110 cursor-pointer"
+              src="Zeitzeugen-video.png"
+            />
+          </a>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Emil Baierl</h3>
+        <p class="text-sm md:text-base leading-relaxed">
+          Emil Baierl wurde am 8. Dezember 1933 in Uhliště in der Region Klatovsko (deutsch Kohlheim) geboren und wuchs in einem großen Bauernhaus mit Schusterwerkstatt auf.
+        </p>
+        <a class="text-blue-400 hover:underline" href="https://www.memoryofnations.eu/de/baierl-emil-20190904">
+          Die ganze Geschichte
+        </a>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg hover-glow">
+        <div class="overflow-hidden rounded-lg">
+          <a href="https://www.memoryofnations.eu/en/bohm-robert-1932" target="_blank">
+            <img
+              alt="Bild des Münchner Abkommens"
+              class="w-full mb-4 transform transition-transform duration-300 hover:scale-110 cursor-pointer"
+              src="Robert-Böhm-Video.png"
+            />
+          </a>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Robert Böhm</h3>
+        <p class="text-sm md:text-base leading-relaxed">
+          Robert Böhm wurde am 26. Februar 1932 in Nýrsko (Neuern) in der Familie des Architekten Robert Böhm geboren, der unter anderem das noch erhaltene Denkmal für den Ersten Weltkrieg entwarf. Im Jahr 1937...
+        </p>
+        <a class="text-blue-400 hover:underline" href="https://www.memoryofnations.eu/de/boehm-robert-20190901">
+          Die ganze Geschichte
+        </a>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg hover-glow">
+        <div class="overflow-hidden rounded-lg">
+          <a href="https://www.memoryofnations.eu/en/cermakova-karolina-1934" target="_blank">
+            <img
+              alt="Bild des Münchner Abkommens"
+              class="w-full mb-4 transform transition-transform duration-300 hover:scale-110 cursor-pointer"
+              src="Karolina-Video.png"
+            />
+          </a>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Karolina Cermakova</h3>
+        <p class="text-sm md:text-base leading-relaxed">
+          Karolina Čermáková wurde am 15. April 1934 in Nýrsko in der Pošumaví-Region geboren. Sie wuchs in einem zweisprachigen Umfeld auf, ihre Mutter sprach Tschechisch und ihr Vater Deutsch. Ihr Vater...
+        </p>
+        <a class="text-blue-400 hover:underline" href="https://www.memoryofnations.eu/de/cermakova-karolina-20190902-0">
+          Die ganze Geschichte
+        </a>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg hover-glow">
+        <div class="overflow-hidden rounded-lg">
+          <a href="https://www.memoryofnations.eu/en/eppinger-johann-1936" target="_blank">
+            <img
+              alt="Bild des Münchner Abkommens"
+              class="w-full mb-4 transform transition-transform duration-300 hover:scale-110 cursor-pointer"
+              src="Johann-Eppinger-Video.png"
+            />
+          </a>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Johann Eppinger</h3>
+        <p class="text-sm md:text-base leading-relaxed">
+          Johann Eppinger wurde am 12. Juli 1936 in Dolní Sněžná bei Prachatice als Sohn einer deutschen Familie geboren. 1938 zog die Familie nach Prachatice...
+        </p>
+        <a class="text-blue-400 hover:underline" href="https://www.memoryofnations.eu/de/eppinger-johann-20190901-0">
+          Die ganze Geschichte
+        </a>
+      </div>
+      <div class="bg-gray-800 p-4 rounded-lg hover-glow">
+        <div class="overflow-hidden rounded-lg">
+          <a href="https://www.memoryofnations.eu/en/fischer-anna-1927" target="_blank">
+            <img
+              alt="Bild des Münchner Abkommens"
+              class="w-full mb-4 transform transition-transform duration-300 hover:scale-110 cursor-pointer"
+              src="Anna-Fischer-Video.png"
+            />
+          </a>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Anna Fischer</h3>
+        <p class="text-sm md:text-base leading-relaxed">
+          Anna Fischer, geborene Brown, wurde am 16. Juli 1927 im damals vollständig deutschen Dorf Hyršov (Hirschau) in der Nähe von Kdyně bei Domažlice geboren. Die Familie besaß ein...
+        </p>
+        <a class="text-blue-400 hover:underline" href="https://www.memoryofnations.eu/de/fischer-anna-20190905-0">
+          Die ganze Geschichte
+        </a>
+      </div>
+    </div>
+   </section>
+  </main>
+  <script>document.querySelectorAll('.image-button').forEach(button => {
+    const img = button.querySelector('img');
+    const originalSrc = img.src;
+    const hoverSrc = img.getAttribute('data-hover-src');
+
+    button.addEventListener('mouseenter', () => {
+        img.src = hoverSrc; 
+    });
+
+    button.addEventListener('mouseleave', () => {
+        img.src = originalSrc; 
+    });
+});
+  </script>
+  <footer class="bg-gray-800 p-4 text-center animate-fade-in">
+    <p class="text-sm md:text-base">2025 Sudata. Ein Projekt von Philipp und Fabio.</p>
+    <div class="mt-4 space-x-2 md:space-x-4">
+      <a class="hover:text-gray-400 transition duration-300 ease-in-out transform hover:scale-125 animate-spin" href="#"><i class="fab fa-facebook-f"></i></a>
+      <a class="hover:text-gray-400 transition duration-300 ease-in-out transform hover:scale-125 animate-spin" href="#"><i class="fab fa-twitter"></i></a>
+      <a class="hover:text-gray-400 transition duration-300 ease-in-out transform hover:scale-125 animate-spin" href="#"><i class="fab fa-instagram"></i></a>
+      <a class="hover:text-gray-400 transition duration-300 ease-in-out transform hover:scale-125 animate-spin" href="#"><i class="fab fa-linkedin-in"></i></a>
+    </div>
+  </footer>
+</body>
+</html>
